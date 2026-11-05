@@ -1,6 +1,6 @@
 # Architecture
 
-Decisium is a trust firewall that sits between an AI agent and the transactions it wants to perform. This document describes the high-level architecture — the layers, the flow, and the design principles — without exposing implementation details.
+truslay is a trust firewall that sits between an AI agent and the transactions it wants to perform. This document describes the high-level architecture — the layers, the flow, and the design principles — without exposing implementation details.
 
 ## Design principles
 
@@ -13,7 +13,7 @@ Three principles drive every layer in the pipeline:
 ## The flow
 
 ```
-Agent action ──► Decisium pipeline ──► Verdict: allow / review / block
+Agent action ──► Truslay pipeline ──► Verdict: allow / review / block
                                               │
                     ┌───────────────────────┼───────────────────────┐
                     │                       │                       │

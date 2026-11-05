@@ -1,4 +1,4 @@
-# PITCH — Decisium
+# PITCH — Truslay
 
 ## The problem
 
@@ -9,7 +9,7 @@ that most need to automate payments and subscriptions.
 
 ## The solution
 
-**Decisium** is a firewall for agents' *decisions*:
+**Truslay** is a firewall for agents' *decisions*:
 
 - **On-chain programmable limits** that the user controls with their wallet
   (daily budget, max per transaction, whitelist, kill switch).
@@ -44,7 +44,7 @@ that most need to automate payments and subscriptions.
 | Layer | Technology |
 |---|---|
 | Web tools | WebMCPcss (declarative, self-repairing) |
-| Decision | Laya 0.3.21 (typed-decisions checkpoint), served locally |
+| Decision | Decision Engine Model (typed-decisions checkpoint), served locally |
 | Chain | Sui Testnet: Move (SpendingPolicy, AgentIdentity, MockUSDC) |
 | Service | TypeScript + Express + @mysten/sui SDK |
 | UI | React + Vite + @mysten/dapp-kit |

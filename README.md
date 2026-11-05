@@ -1,8 +1,8 @@
-# Decisium — The Trust Firewall for AI Agents
+# Truslay — The Trust Firewall for AI Agents
 
 ![Status: Pre-Seed MVP](https://img.shields.io/badge/status-pre--seed%20MVP-blue)
 
-> Decisium is the trust layer that lets AI agents transact safely on the web.
+> Truslay is the trust layer that lets AI agents transact safely on the web.
 
 ## The problem
 
@@ -43,7 +43,7 @@ The result is a system where an agent can act autonomously within safe boundarie
                                   │ action request
                                   ▼
                     ┌─────────────────────────────┐
-                    │         DECISIUM              │
+                    │         TRUSLAY              │
                     │    (trust firewall layer)    │
                     ├─────────────────────────────┤
                     │  1. Human pause (kill switch)│
@@ -107,5 +107,5 @@ An independent red-team suite of 34 adversarial prompt injection attacks targets
 
 ## Contact
 
-- **Email:** cochineator@gmail.com
+- **Email:** cochinoraptor@gmail.com
 - **Issues:** [Open an issue](https://github.com/cochinoraptor/Decisium-Showcase/issues)
