@@ -13,7 +13,7 @@ that most need to automate payments and subscriptions.
 
 - **On-chain programmable limits** that the user controls with their wallet
   (daily budget, max per transaction, whitelist, kill switch).
-- **Calibrated decision in p50 143 ms pure inference** (Laya, System-1; ~315 ms end-to-end on CPU): every action is evaluated in
+- **Calibrated decision in p50 143 ms pure inference** (Decision Engine, System-1; ~315 ms end-to-end on CPU): every action is evaluated in
   one forward pass with measurable confidence — no generative LLM hallucinating.
 - **Human-in-the-loop by exception**: only the doubtful reaches the approval queue;
   the routine flows on its own within limits.
