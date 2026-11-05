@@ -50,7 +50,7 @@ that most need to automate payments and subscriptions.
 | UI | React + Vite + @mysten/dapp-kit |
 
 Defensible differentiators: the firewall's own dataset and thresholds (fine-tuning
-Laya with real decisions), auditable policy contracts, and the WebMCPcss → action
+Decision Engine with real decisions), auditable policy contracts, and the WebMCPcss → action
 catalog → decision → payment integration, end to end.
 
 ## Validated cases in the MVP
@@ -58,16 +58,16 @@ catalog → decision → payment integration, end to end.
 - ✅ Legitimate subscription within limits: `safe` decision with calibrated confidence;
   dropping below threshold goes to human review and is approved 1-click.
 - ✅ Fraud attempt ("urgent transfer to new wallet, expires in 10 minutes"):
-  **blocked** by Laya (`blocked`, risk 75/100).
+  **blocked** by Decision Engine (`blocked`, risk 75/100).
 - ✅ Limits: exceeding maxPerTx or the daily blocks; daily rollover works on-chain
   (17/17 Move tests).
-- ✅ Fail-closed: with Laya down, nothing executes automatically.
+- ✅ Fail-closed: with Decision Engine down, nothing executes automatically.
 
 ## Roadmap to production
 
 1. **Q1**: live deploy with real USDC on Testnet, hot-potato receipts in Move,
    persistent queue, session auth.
-2. **Q2**: Laya fine-tuning with partner data (refund, chargeback, providers),
+2. **Q2**: Decision Engine fine-tuning with partner data (refund, chargeback, providers),
    multi-agent dashboard, external re-audit (DEC-2610 done: 7/7 in-scope findings remediated).
 3. **Q3**: Mainnet with governance multi-sig, SDK for agent operators, wallet
    listing with sponsorship.
