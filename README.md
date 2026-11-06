@@ -65,6 +65,8 @@ The result is a system where an agent can act autonomously within safe boundarie
 
 Each layer is independent. A block at any layer stops the action. Layers are consulted in order, and the final verdict is recorded for audit.
 
+https://github.com/cochinoraptor/truslay-move-contracts-audit
+
 ## Verification highlights
 
 ### Tests
