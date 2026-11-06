@@ -27,6 +27,9 @@ See [SETUP.md](SETUP.md) for the full environment.
 Quick start:
 
 ```bash
+# WebMCPcss (third-party, vendor/)
+cd vendor/WebMCPcss && npm install && npm run build && npm test
+
 # Decision Engine (Truslay)
 # Note: The internal command remains `laya-serve` for compatibility.
 pip install --user "laya[serve]"
