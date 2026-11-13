@@ -1,6 +1,45 @@
 # Architecture
 
-truslay is a trust firewall that sits between an AI agent and the transactions it wants to perform. This document describes the high-level architecture — the layers, the flow, and the design principles — without exposing implementation details.
+Truslay is a trust ecosystem that sits between an AI agent and the actions it wants to perform. This document describes the high-level architecture — the layers, the flow, and the design principles — without exposing implementation details.
+
+## Ecosystem flow: Gateway → Shield → Enterprise API
+
+At the ecosystem level, each agent action is routed, evaluated by the appropriate shield, and validated through the Enterprise API (including identity validation on Sui) before execution:
+
+```
+                         ┌─────────────────────────────┐
+                         │          AI AGENT            │
+                         │   (intent / action request)  │
+                         └─────────────┬───────────────┘
+                                       │
+                                       ▼
+                         ┌─────────────────────────────┐
+                         │      ROUTING GATEWAY         │
+                         │  resolve shield by context   │
+                         │  (hr, finance, devops, ...)  │
+                         └─────────────┬───────────────┘
+                                       │
+                                       ▼
+                         ┌─────────────────────────────┐
+                         │    CORRESPONDING SHIELD      │
+                         │  domain-specific evaluation  │
+                         │  verdict: allow/review/block │
+                         └─────────────┬───────────────┘
+                                       │
+                                       ▼
+                         ┌─────────────────────────────┐
+                         │       ENTERPRISE API         │
+                         │  policy + decision validation│
+                         │  identity validation on Sui  │
+                         │      (Move contracts)        │
+                         └─────────────┬───────────────┘
+                                       │
+                                       ▼
+                         ┌─────────────────────────────┐
+                         │      ACTION / EXECUTOR       │
+                         │   execute only if approved   │
+                         └─────────────────────────────┘
+```
 
 ## Design principles
 
@@ -59,9 +98,9 @@ Outgoing requests are inspected for exfiltration, sensitive path access, unautho
 
 Actions above a configurable threshold, or with low model confidence, are queued for a human to approve or reject. This is the final backstop. The queue is the human's chance to catch anything the automated layers missed — and the reason the system is fail-closed rather than fail-open.
 
-## What Decisium is not
+## What Truslay is not
 
-- It is not a replacement for the agent. The agent still decides what to do; Decisium decides whether to let it execute.
+- It is not a replacement for the agent. The agent still decides what to do; Truslay decides whether to let it execute.
 - It is not a payment processor. It sits in front of one.
 - It is not a silver bullet. The layers reduce risk, but a determined adversary and a poorly calibrated model can still cause problems. The honest summary of what the current MVP does and does not protect is in [SECURITY.md](SECURITY.md).
 
