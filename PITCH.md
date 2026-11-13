@@ -9,7 +9,7 @@ that most need to automate payments and subscriptions.
 
 ## The solution
 
-**Truslay** is a firewall for agents' *decisions*:
+**Truslay** is a trust and security layer for agents' *decisions*:
 
 - **On-chain programmable limits** that the user controls with their wallet
   (daily budget, max per transaction, whitelist, kill switch).
@@ -20,6 +20,16 @@ that most need to automate payments and subscriptions.
 - **Verifiable audit**: every executed action stays in on-chain events linked to the
   agent's identity.
 - **Gasless payments** for the user via Sui's native sponsorship.
+
+## Ecosystem vision (Shields + Gateway + Enterprise API)
+
+Truslay is evolving from a single firewall into a **Trust Ecosystem for the Agentic World**:
+
+- **10 Security Shields:** domain-specific protections (HR, Finance, Health-PII, Legal, Cyber, DevOps, E-commerce, Social Media, Customer Support, Booking) that detect and block risks tailored to each context.
+- **Routing Gateway:** routes each agent action/request to the appropriate Shield and orchestrates evaluation across the security layer.
+- **Enterprise API:** the unified interface for integrating, validating and enforcing decisions at scale — connecting navigation, shield verdicts and identity/policy checks so organizations can adopt agentic workflows with control and auditability.
+
+Together, **Shields + Gateway + Enterprise API** turn Truslay into a composable security and trust platform: agents can navigate and act, while every sensitive step is evaluated, routed and validated before execution.
 
 ## Why now
 
@@ -43,9 +53,9 @@ that most need to automate payments and subscriptions.
 
 | Layer | Technology |
 |---|---|
-| Web tools | WebMCPcss (declarative, self-repairing) |
+| Web tools / navigation | WebMCPcss (declarative, self-repairing) · Agent Navigator (open-source map) |
 | Decision | Decision Engine Model (typed-decisions checkpoint), served locally |
-| Chain | Sui Testnet: Move (SpendingPolicy, AgentIdentity, MockUSDC) |
+| Chain / identity | Sui (Move): SpendingPolicy, AgentIdentity, MockUSDC — contracts audit in process (HackenProof) |
 | Service | TypeScript + Express + @mysten/sui SDK |
 | UI | React + Vite + @mysten/dapp-kit |
 
