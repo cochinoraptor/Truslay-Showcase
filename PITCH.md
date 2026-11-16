@@ -46,8 +46,7 @@ Together, **Shields + Gateway + Enterprise API** turn Truslay into a composable 
 - **Agencies and agent operators** (browser automation) that need to sign enterprise
   customers: the firewall is their compliance.
 - **SaaS with support/ops agents** that pay subscriptions or invoices.
-- Design partners in conversation: **Houston** (payments), **Callbook AI**
-  (voice agents with expenses).
+
 
 ## Stack (no proprietary secrets)
 
