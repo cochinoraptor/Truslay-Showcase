@@ -3,6 +3,13 @@
 ![Status: Pre-Seed MVP](https://img.shields.io/badge/status-pre--seed%20MVP-blue)
 
 > Truslay is the trust ecosystem that lets AI agents operate and transact safely in the agentic world.
+> 
+> ## Modular by Design
+
+You don't need the entire ecosystem to get value. Truslay is built as independent, composable products:
+
+
+Combine them for the ultimate Trust Ecosystem: Agent Navigator asks the Firewall for permission before executing any web action.
 
 ## Introduction
 
