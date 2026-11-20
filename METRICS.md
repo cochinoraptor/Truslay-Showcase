@@ -16,7 +16,7 @@ Canonical numbers as measured against a calibrated INT4 decision engine on CPU. 
 * **Status:** 7/7 in-scope remediated, each fix covered by regression tests (firewall suite 127 → 192 tests).
 * Full report under NDA.
 
-## Latency (real decisión engine, INT4 CPU)
+## Latency (real decision engine, INT4 CPU)
 
 |Metric|Value|
 |-|-|

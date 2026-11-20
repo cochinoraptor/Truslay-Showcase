@@ -79,16 +79,16 @@ Truslay is not just a firewall. It is an ecosystem that combines **10 Security S
 
 | Shield | What it protects |
 |---|---|
-| **HR Shield** | Escanea currículums en busca de inyecciones ocultas. |
-| **Finance Shield** | Protege transferencias y pagos de acciones no autorizadas. |
-| **Health-PII Shield** | Redacta y protege datos médicos sensibles (PII). |
-| **Legal Shield** | Detecta alucinaciones y cláusulas inventadas en contratos. |
-| **Cyber Shield** | Bloquea código peligroso y comandos maliciosos. |
-| **DevOps Shield** | Evita comandos destructivos en servidores y bases de datos. |
-| **E-commerce Shield** | Protege inventario y precios de tiendas online. |
-| **Social Media Shield** | Modera contenido tóxico y protege la reputación de marca. |
-| **Customer Support Shield** | Protege chats y datos de clientes en el CRM. |
-| **Booking Shield** | Protege sistemas de reservas y agendas. |
+| **HR Shield** | Scans résumés for hidden injections. |
+| **Finance Shield** | Protects transfers and payments from unauthorized actions. |
+| **Health-PII Shield** | Redacts and protects sensitive medical data (PII). |
+| **Legal Shield** | Detects hallucinations and invented clauses in contracts. |
+| **Cyber Shield** | Blocks dangerous code and malicious commands. |
+| **DevOps Shield** | Prevents destructive commands on servers and databases. |
+| **E-commerce Shield** | Protects inventory and pricing for online stores. |
+| **Social Media Shield** | Moderates toxic content and protects brand reputation. |
+| **Customer Support Shield** | Protects chats and customer data in the CRM. |
+| **Booking Shield** | Protects booking systems and calendars. |
 
 ## WebMCPcss and Agent Navigator
 
