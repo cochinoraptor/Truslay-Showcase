@@ -1,6 +1,3 @@
-
-
-
 ## The New Wave of AI Bots is Here. Protect Your Business.
 
 **You don't need to use AI to be attacked by it.** 
@@ -53,21 +50,21 @@ Every industry is facing the new wave of AI bots. Here is how Truslay stops them
 
 ## One Simple Integration. Instant Protection.
 
-
+```bash
 npm install @truslay/sdk
-
-
-
-# Truslay — The Trust Ecosystem for the Agentic World
+```
 
 ![Status: Pre-Seed MVP](https://img.shields.io/badge/status-pre--seed%20MVP-blue)
 
 > Truslay is the trust ecosystem that lets AI agents operate and transact safely in the agentic world.
-> 
-> ## Modular by Design
+
+## Modular by Design
 
 You don't need the entire ecosystem to get value. Truslay is built as independent, composable products:
 
+- **Firewall** — the 10 Security Shields that evaluate every agent action.
+- **Agent Navigator** — the WebMCPcss map that tells agents how to navigate a site.
+- **Enterprise API** — the validation layer that enforces policy before execution.
 
 Combine them for the ultimate Trust Ecosystem: Agent Navigator asks the Firewall for permission before executing any web action.
 
