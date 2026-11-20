@@ -1,3 +1,9 @@
+# Truslay — The Trust Ecosystem for the Agentic World
+
+![Status: Pre-Seed MVP](https://img.shields.io/badge/status-pre--seed%20MVP-blue)
+
+> Truslay is the trust ecosystem that lets AI agents operate and transact safely in the agentic world.
+
 ## The New Wave of AI Bots is Here. Protect Your Business.
 
 **You don't need to use AI to be attacked by it.** 
@@ -50,13 +56,11 @@ Every industry is facing the new wave of AI bots. Here is how Truslay stops them
 
 ## One Simple Integration. Instant Protection.
 
+Add Truslay to your project with one command:
+
 ```bash
 npm install @truslay/sdk
 ```
-
-![Status: Pre-Seed MVP](https://img.shields.io/badge/status-pre--seed%20MVP-blue)
-
-> Truslay is the trust ecosystem that lets AI agents operate and transact safely in the agentic world.
 
 ## Modular by Design
 
