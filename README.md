@@ -34,6 +34,21 @@ Truslay is not just a firewall. It is an ecosystem that combines **10 Security S
 
 Truslay integrates **Agent Navigator** (the [WebMCPcss](https://github.com/cochinoraptor/WebMCPcss) open-source map, **MIT** license) so agents can navigate the web using a structured, reliable tool/navigation map. Navigation and tool discovery are paired with Truslay’s protection model: **security is validated through the Enterprise API**, ensuring agent actions are evaluated and enforced consistently before execution.
 
+## Demo: an autonomous agent buying something
+
+A recorded, end-to-end run in [`demo-agente/`](demo-agente/): a Puppeteer agent
+opens the storefront, finds "Auriculares Pro X1" by its visible text, adds it to
+the cart, fills the checkout form with real typing and places the order — then
+verifies the `ORD-…` in the confirmation modal against `localStorage`.
+
+- [Video (56 s, 1280×900)](demo-agente/demo-agente-truslay.mp4)
+- [One screenshot per step](demo-agente/) — `01-home` … `05-purchase-complete`
+- [Agent code](demo-agente/agent.js) + [run notes](demo-agente/README.md)
+
+It is the unprotected baseline: the agent navigates the DOM with heuristics of
+its own. With Agent Navigator + the firewall, the same intent is declared by the
+navigation map and evaluated by Truslay before it executes.
+
 ## Security audit (HackenProof)
 
 Truslay maintains an external security review process with **HackenProof**. The **audit of the contracts in Move (Sui)** is currently **in process**.
