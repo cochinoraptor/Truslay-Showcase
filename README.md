@@ -1,3 +1,63 @@
+
+
+
+## The New Wave of AI Bots is Here. Protect Your Business.
+
+**You don't need to use AI to be attacked by it.** 
+
+Today, any website, app, or online portal can be targeted by the new wave of automated AI bots. Competitors steal your prices, fraudsters create fake accounts, and automated systems extract your data 24/7. 
+
+Truslay is the security layer that protects your infrastructure from these new AI threats — and helps your own systems work better.
+
+### 🛡️ 1. Protect Your Business (Even if you don't use AI)
+*For any company that wants to stop malicious bots.*
+
+Install Truslay to shield your website or app from unauthorized AI bots. Truslay acts as an intelligent security guard that:
+- Stops bots that browse your site at superhuman speeds (BehavioralGuard).
+- Sets invisible traps to catch automated scrapers (Honeypots).
+- Blocks fake account creation, price stealing, and data theft.
+- Works instantly with any technology: React, WordPress, Shopify, or custom websites.
+
+### 🤝 2. Empower Your Own AI (When you are ready)
+*For tech teams building their own automated systems.*
+
+If your company uses AI bots to do work for you, Truslay gives them a secure digital identity and the ability to navigate websites without breaking. If a website changes its design, your bots automatically adapt and keep working.
+
+---
+
+## Real-World Examples: How Truslay Protects Your Business
+
+Every industry is facing the new wave of AI bots. Here is how Truslay stops them.
+
+### 🛒 E-commerce & Retail (Addi, Siigo, Shopify stores)
+**The Problem:** Competitors use AI bots to monitor and steal your prices and stock levels in real time, undercutting your business.
+**The Truslay Solution:** Truslay detects bots that browse your store too fast and blocks them. Your pricing strategy stays private.
+
+### 🏦 Banking & Fintech
+**The Problem:** Fraudsters use automated bots to create thousands of fake accounts for money laundering and scams, risking your compliance and reputation.
+**The Truslay Solution:** Truslay evaluates every new account and login. Bots are blocked instantly; real human customers get in without friction.
+
+### 🎟️ Ticketing & Events
+**The Problem:** Scalper bots buy all your event tickets in seconds to resell them at higher prices, making your real customers angry.
+**The Truslay Solution:** Truslay detects inhuman buying speeds and stops the bots. Your real fans get the tickets, and your brand stays trusted.
+
+### 📰 Content & Media Platforms
+**The Problem:** AI companies use bots to scrape your articles, images, and videos without permission to train their own competing products.
+**The Truslay Solution:** Truslay identifies unauthorized bulk downloading and blocks it. Your intellectual property and revenue stay safe.
+
+### ✈️ Airlines & Hospitality
+**The Problem:** Competitors and travel aggregators use bots to spy on your dynamic pricing and undercut your margins.
+**The Truslay Solution:** Truslay detects and blocks automated price-monitoring bots. Your pricing strategy and profits stay healthy.
+
+---
+
+## One Simple Integration. Instant Protection.
+
+
+npm install @truslay/sdk
+
+
+
 # Truslay — The Trust Ecosystem for the Agentic World
 
 ![Status: Pre-Seed MVP](https://img.shields.io/badge/status-pre--seed%20MVP-blue)
