@@ -72,6 +72,8 @@ You don't need the entire ecosystem to get value. Truslay is built as independen
 
 Combine them for the ultimate Trust Ecosystem: Agent Navigator asks the Firewall for permission before executing any web action.
 
+See [docs/interaction-scenarios.md](docs/interaction-scenarios.md) for the three interaction workflows (Mermaid diagrams): local Defense, authorized Collaboration, and high-risk Human-in-the-Loop approval.
+
 ## Introduction
 
 Truslay is not just a firewall. It is an ecosystem that combines **10 Security Shields**, a **Routing Gateway**, and an **Enterprise API** to protect AI agents end to end: actions are routed to the right shield, evaluated under policy and risk controls, and validated through the Enterprise API before they can proceed. The system is **fail-closed by design** — when in doubt, actions are held for review rather than auto-approved.
