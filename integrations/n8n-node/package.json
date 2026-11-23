@@ -1,0 +1,53 @@
+{
+  "name": "n8n-nodes-truslay",
+  "version": "0.1.0",
+  "description": "Truslay firewall for n8n: evaluate an action before your workflow runs it and stop, error or flag it when the verdict is BLOCK.",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n-nodes",
+    "truslay",
+    "security",
+    "firewall",
+    "ai-agents"
+  ],
+  "license": "MIT",
+  "author": "Truslay",
+  "homepage": "https://github.com/cochinoraptor/Truslay-Showcase/tree/main/integrations/n8n-node",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cochinoraptor/Truslay-Showcase.git",
+    "directory": "integrations/n8n-node"
+  },
+  "main": "index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "index.js",
+    "index.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/TruslayApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Truslay/Truslay.node.js"
+    ]
+  },
+  "dependencies": {
+    "@truslay/sdk": "^2.1.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "devDependencies": {
+    "n8n-workflow": "^1.82.0",
+    "typescript": "^5.9.3"
+  }
+}
