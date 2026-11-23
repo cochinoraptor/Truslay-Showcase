@@ -1,25 +1,45 @@
 # Autonomous purchasing agent — recorded demo
 
 A Puppeteer agent buys a product end to end in the sample storefront
-(`http://localhost:4173`, Vite preview). The whole run was recorded and every
-step was captured, so the result is auditable instead of claimed.
+(`http://localhost:4173`, Vite preview), with every critical action evaluated by
+`@truslay/sdk` 2.1.0 before it runs. The whole run was recorded and every step
+was captured, so the result is auditable instead of claimed.
 
-| File                        | What it is                                                        |
-| --------------------------- | ----------------------------------------------------------------- |
-| `agent.js`                  | The agent: catalog → add to cart → checkout → form → order        |
-| `demo-agente-truslay.mp4`   | Recording of the run — 56.13 s, 1280×900, H.264, 30 fps (~5 MB)   |
-| `01-home.png`               | Catalog loaded (12 product cards)                                 |
-| `02-added-to-cart.png`      | "Auriculares Pro X1" added: badge and confirmation toast          |
-| `03-checkout-modal.png`     | Checkout modal with the four fields                               |
-| `04-form-filled.png`        | Name, email, address and card filled with real typing             |
-| `05-purchase-complete.png`  | Confirmation modal with the generated `ORD-…`                     |
+| File                       | What it is                                                       |
+| -------------------------- | ---------------------------------------------------------------- |
+| `agent.js`                 | The agent: catalog → cart → checkout → form → order, SDK-gated   |
+| `demo-agente-truslay.mp4`  | Recording of the run — 1:03.4, 1280×900, H.264, 30 fps (~6.3 MB) |
+| `01-home.png`              | Catalog loaded (12 product cards)                                |
+| `02-added-to-cart.png`     | "Auriculares Pro X1" added: badge and confirmation toast         |
+| `03-checkout-modal.png`    | Checkout modal with the four fields                              |
+| `04-form-filled.png`       | Name, email, address and card filled with real typing            |
+| `05-purchase-complete.png` | Confirmation modal with the generated `ORD-…`                    |
+
+## The live SDK console in the recording
+
+The video shows the SDK's evaluation, not just the page. `agent.js` injects a
+fixed console panel into every document before paint — `pointer-events: none`, so
+it never swallows the agent's clicks — and mirrors two things into it:
+
+- every `console` message the storefront emits, and
+- each `evaluateAction()` call with its verdict line
+  (`ALLOW · sandbox_mode · 0ms`) plus a floating verdict badge.
+
+Everything the panel shows is also printed in the Node terminal, so a reviewer
+can diff the video against the process output.
 
 ## What the run proves
+
+Five intents are declared to the SDK before they execute — `read_catalog`,
+`add_to_cart`, `open_checkout`, `fill_checkout_form`, `submit_order` — and all
+five return `ALLOW` in `sandbox` mode. Sandbox is honest about itself: it logs
+and audits, it does not enforce over the network, so this run demonstrates the
+integration and the verdict pipeline, not a blocked attack.
 
 The agent verifies the purchase instead of assuming it: it reads the order ID
 from the confirmation modal **and** the orders stored in
 `localStorage.techgadgets_orders`, and both must match
-(`ORD-1795188331892-atp2wslvr` in the recorded run). The cart is empty
+(`ORD-1795274361227-myqd68x5q` in the recorded run). The cart is empty
 afterwards and the page reported zero JavaScript errors.
 
 Two details are deliberate:
@@ -29,6 +49,28 @@ Two details are deliberate:
   WebMCPcss and Truslay address declaratively.
 - **The recording starts before `page.goto`** and stops in `finally` before the
   browser closes, so the video includes the site load and is always finalized.
+
+The agent is written fail-closed even though sandbox never trips it:
+`authorize()` aborts on anything other than `ALLOW` and saves
+`blocked-<intent>.png`.
+
+## Client configuration
+
+```js
+const truslay = new TruslayUniversalClient(
+  {
+    mode: 'collaboration',
+    firewallMode: 'sandbox',
+    shieldId: 'e-commerce',
+    timeoutMs: 150,
+  },
+  'agent', // ← operatorType is the SECOND positional argument
+);
+```
+
+`operatorType` inside the config object is silently ignored — the runtime falls
+back to `'universal'`. See
+[../docs/api-corrections.md](../docs/api-corrections.md).
 
 ## Run it
 
@@ -48,9 +90,9 @@ Full walkthrough, configuration table, expected console output and known issues
 
 ## Where Truslay fits
 
-This demo is the unprotected baseline: an agent driving a real DOM with
-heuristics of its own. In the Truslay model the same intent (`addToCart`,
-`checkout`) is described by the Agent Navigator map, and the action is evaluated
-by the firewall — routing, policy and verdicts — before it executes. The agent
-still sees a normal website; what changes is who decides whether the action is
-allowed.
+The agent still sees a normal website and drives it with its own heuristics: the
+product is found by visible text, the form is typed field by field. What changes
+is **who decides whether an action is allowed**. Here that decision comes from
+`evaluateAction()` through the `collaboration` client. With Agent Navigator the
+same intent (`addToCart`, `checkout`) is declared by the navigation map, so the
+agent does not have to guess the DOM at all.

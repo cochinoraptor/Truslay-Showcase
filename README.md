@@ -97,20 +97,32 @@ Truslay is not just a firewall. It is an ecosystem that combines **10 Security S
 
 Truslay integrates **Agent Navigator** (the [WebMCPcss](https://github.com/cochinoraptor/WebMCPcss) open-source map, **MIT** license) so agents can navigate the web using a structured, reliable tool/navigation map. Navigation and tool discovery are paired with Truslay’s protection model: **security is validated through the Enterprise API**, ensuring agent actions are evaluated and enforced consistently before execution.
 
-## Demo: an autonomous agent buying something
+## Demo: an autonomous agent buying something — supervised by Truslay
 
 A recorded, end-to-end run in [`demo-agente/`](demo-agente/): a Puppeteer agent
 opens the storefront, finds "Auriculares Pro X1" by its visible text, adds it to
 the cart, fills the checkout form with real typing and places the order — then
 verifies the `ORD-…` in the confirmation modal against `localStorage`.
 
-- [Video (56 s, 1280×900)](demo-agente/demo-agente-truslay.mp4)
+- [Video (1:03, 1280×900)](demo-agente/demo-agente-truslay.mp4) — the recording
+  carries a **live console overlay of the SDK**: every `evaluateAction()` call and
+  its verdict appear inside the video frame, next to the page being automated.
 - [One screenshot per step](demo-agente/) — `01-home` … `05-purchase-complete`
 - [Agent code](demo-agente/agent.js) + [run notes](demo-agente/README.md)
 
-It is the unprotected baseline: the agent navigates the DOM with heuristics of
-its own. With Agent Navigator + the firewall, the same intent is declared by the
-navigation map and evaluated by Truslay before it executes.
+Every critical intent (`read_catalog`, `add_to_cart`, `open_checkout`,
+`fill_checkout_form`, `submit_order`) is declared to `@truslay/sdk` **2.1.0**
+before it executes and waits for the verdict. The recorded run uses the
+`collaboration` client with `firewallMode: 'sandbox'` and operator `agent`, so all
+five intents return `ALLOW · sandbox_mode` — the evaluation is visible, while
+sandbox mode audits instead of enforcing over the network. The agent is written
+fail-closed: any verdict other than `ALLOW` stops the run and saves a
+`blocked-<intent>.png` capture.
+
+The operator is the **second positional argument** of the constructor
+(`new TruslayUniversalClient(config, 'agent')`); an `operatorType` key inside the
+config object is silently ignored — see
+[docs/api-corrections.md](docs/api-corrections.md).
 
 ## Security audit (HackenProof)
 
