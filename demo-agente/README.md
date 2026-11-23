@@ -9,6 +9,8 @@ was captured, so the result is auditable instead of claimed.
 | -------------------------- | ---------------------------------------------------------------- |
 | `agent.js`                 | The agent: catalog → cart → checkout → form → order, SDK-gated   |
 | `demo-agente-truslay.mp4`  | Recording of the run — 1:03.4, 1280×900, H.264, 30 fps (~6.3 MB) |
+| `block-evidence.mp4`       | Fail-closed proof — 0:09.9, 1280×900, H.264, 30 fps (~1.9 MB)   |
+| `block-evidence.js`        | Recorder for the `BLOCK / firewall_unavailable` path               |
 | `01-home.png`              | Catalog loaded (12 product cards)                                |
 | `02-added-to-cart.png`     | "Auriculares Pro X1" added: badge and confirmation toast         |
 | `03-checkout-modal.png`    | Checkout modal with the four fields                              |
@@ -34,7 +36,8 @@ Five intents are declared to the SDK before they execute — `read_catalog`,
 `add_to_cart`, `open_checkout`, `fill_checkout_form`, `submit_order` — and all
 five return `ALLOW` in `sandbox` mode. Sandbox is honest about itself: it logs
 and audits, it does not enforce over the network, so this run demonstrates the
-integration and the verdict pipeline, not a blocked attack.
+integration and the verdict pipeline, not a blocked attack — that branch has its
+own recording in [The BLOCK path, recorded](#the-block-path-recorded).
 
 The agent verifies the purchase instead of assuming it: it reads the order ID
 from the confirmation modal **and** the orders stored in
@@ -53,6 +56,25 @@ Two details are deliberate:
 The agent is written fail-closed even though sandbox never trips it:
 `authorize()` aborts on anything other than `ALLOW` and saves
 `blocked-<intent>.png`.
+
+## The BLOCK path, recorded
+
+A fail-closed branch that never fires is a claim, so
+[`block-evidence.js`](block-evidence.js) exercises it on camera: same
+`collaboration` client and operator, but `firewallMode: 'live'` and no
+`firewallUrl` (nor `apiKey`). The guardian cannot build the decision call, so
+`evaluateAction('add_to_cart')` returns `BLOCK · firewall_unavailable` in ~0 ms.
+The red badge lands over the page, the console shows the abort, and the cart
+count is read back from the DOM as **0**: the product was never added.
+
+[`block-evidence.mp4`](block-evidence.mp4) is that run (0:09.9, 1280×900). The
+script exits non-zero if the verdict is not `BLOCK` or if the cart is not empty,
+so a stale recording cannot pass as evidence. It needs no credentials and runs
+headless — the same `npm install --legacy-peer-deps` covers it:
+
+```bash
+node block-evidence.js   # needs the storefront on :4173
+```
 
 ## Client configuration
 

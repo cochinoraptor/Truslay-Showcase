@@ -107,6 +107,9 @@ verifies the `ORD-…` in the confirmation modal against `localStorage`.
 - [Video (1:03, 1280×900)](demo-agente/demo-agente-truslay.mp4) — the recording
   carries a **live console overlay of the SDK**: every `evaluateAction()` call and
   its verdict appear inside the video frame, next to the page being automated.
+- [Block evidence (0:10, 1280×900)](demo-agente/block-evidence.mp4) — the same
+  client in `firewallMode: 'live'` with no reachable firewall: the SDK answers
+  `BLOCK · firewall_unavailable` and the action never runs.
 - [One screenshot per step](demo-agente/) — `01-home` … `05-purchase-complete`
 - [Agent code](demo-agente/agent.js) + [run notes](demo-agente/README.md)
 
@@ -118,6 +121,15 @@ five intents return `ALLOW · sandbox_mode` — the evaluation is visible, while
 sandbox mode audits instead of enforcing over the network. The agent is written
 fail-closed: any verdict other than `ALLOW` stops the run and saves a
 `blocked-<intent>.png` capture.
+
+That fail-closed branch is recorded, not just claimed:
+[`block-evidence.mp4`](demo-agente/block-evidence.mp4) (0:10) builds the same
+`collaboration` client with `firewallMode: 'live'` and **no** `firewallUrl`, so
+the guardian cannot reach a decision endpoint. `evaluateAction('add_to_cart')`
+returns `BLOCK · firewall_unavailable`, the red verdict badge lands in the video
+and the cart stays at **0** — the product is never added. Live mode is
+fail-closed on purpose: an unreachable firewall blocks the action instead of
+letting it through, and the agent has no fallback path.
 
 The operator is the **second positional argument** of the constructor
 (`new TruslayUniversalClient(config, 'agent')`); an `operatorType` key inside the
