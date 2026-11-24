@@ -62,6 +62,32 @@ Add Truslay to your project with one command:
 npm install @truslay/sdk
 ```
 
+## 🌐 Ecosystem Integrations
+
+Truslay ships as native integration code, not only as an API. Each integration is an isolated project that consumes the published `@truslay/sdk@2.1.0`:
+
+| Platform | What ships today | Status |
+| --- | --- | --- |
+| **n8n** | `n8n-nodes-truslay@0.1.1` — community node with a custom UI logo | Published on npm |
+| **Pipedream** | `TruslayEvaluate.mjs` — native Node.js component for developer-first workflows | Ready to import into a Pipedream project |
+| **Make** | `Evaluate Action` module with visual parameters and execute logic | Structure ready for the Make Custom Apps editor |
+| **Zapier** | — | Coming soon |
+
+Every one of them asks the same question before the platform performs the action:
+
+```ts
+const truslay = new TruslayUniversalClient(
+  { mode: 'collaboration', firewallMode: 'sandbox' },
+  'agent', // operatorType is the SECOND POSITIONAL ARGUMENT (v2.1.0)
+);
+
+const { verdict, reason } = await truslay.evaluateAction({ intent, target });
+```
+
+`ALLOW` lets the action run; anything else is blocked, and `live` mode is fail-closed: an unreachable firewall returns `BLOCK` instead of letting the action through.
+
+Source: [Truslay-SDK → integrations](https://github.com/cochinoraptor/Truslay-SDK/tree/main/integrations).
+
 ## Modular by Design
 
 You don't need the entire ecosystem to get value. Truslay is built as independent, composable products:
