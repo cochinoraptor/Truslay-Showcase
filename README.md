@@ -69,7 +69,7 @@ Truslay ships as native integration code, not only as an API. Each integration i
 | Platform | What ships today | Status |
 | --- | --- | --- |
 | **n8n** | `n8n-nodes-truslay@0.1.1` — community node with a custom UI logo | Published on npm |
-| **Pipedream** | `TruslayEvaluate.mjs` — native Node.js component for developer-first workflows | Ready to import into a Pipedream project |
+| **Pipedream** | `truslay` — native Pipedream App with its own logo (slug `truslay`) and the `Evaluate Action` action in the app selector | App + action ready — pending app registration in Pipedream |
 | **Make** | `Evaluate Action` module with visual parameters and execute logic | Structure ready for the Make Custom Apps editor |
 | **Zapier** | — | Coming soon |
 
