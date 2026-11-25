@@ -9,23 +9,29 @@ that most need to automate payments and subscriptions.
 
 ## The solution
 
-**Truslay** is a trust and security layer for agents' *decisions*:
+**Truslay** is a deterministic execution and audit pipeline for agents' *actions*:
+it decides before the tool runs, and proves the decision afterwards.
 
-- **On-chain programmable limits** that the user controls with their wallet
-  (daily budget, max per transaction, whitelist, kill switch).
-- **Calibrated decision in p50 143 ms pure inference** (Decision Engine, System-1; ~315 ms end-to-end on CPU): every action is evaluated in
-  one forward pass with measurable confidence — no generative LLM hallucinating.
-- **Human-in-the-loop by exception**: only the doubtful reaches the approval queue;
-  the routine flows on its own within limits.
-- **Verifiable audit**: every executed action stays in on-chain events linked to the
-  agent's identity.
-- **Gasless payments** for the user via Sui's native sponsorship.
+- **Sovereign edge (SDK, Layers 1–6):** Signal intercepts the intent, Lattice
+  evaluates it against a versioned policy graph, Shield applies the domain rules,
+  Gate blocks the tool call (fail-closed) and Seal signs the decision with ed25519
+  — all locally, in under 1 ms, with no network dependency.
+- **Immutable trust core (Firewall, Layers 7–8):** Anchor writes ledger hashes to
+  **Sui** for third-party-verifiable audit (SOX/GDPR), and Prism gives the team
+  dashboards, exception queues and evidence export.
+- **Deterministic, not generative:** policies are a graph, not a prompt. The same
+  intent and the same policy version produce the same verdict, explicable node by
+  node. The model does not get to negotiate with the Gate.
+- **Human-in-the-loop by exception:** only the doubtful reaches the approval
+  queue; routine actions flow within limits.
+- **Public freemium:** 1,000 evaluations free; public plans from $19.99/month up
+  to $5,999.99/month. No "contact us for pricing" black box.
 
 ## Ecosystem vision (Shields + Gateway + Enterprise API)
 
-Truslay is evolving from a single firewall into a **Trust Ecosystem for the Agentic World**:
+Truslay is evolving from a deterministic execution pipeline into a **Trust Ecosystem for the Agentic World**:
 
-- **10 Security Shields:** domain-specific protections (HR, Finance, Health-PII, Legal, Cyber, DevOps, E-commerce, Social Media, Customer Support, Booking) that detect and block risks tailored to each context.
+- **Shield domain packs (Layer 03):** domain-specific protections (HR, Finance, Health-PII, Legal, Cyber, DevOps, E-commerce, Social Media, Customer Support, Booking) that detect and block risks tailored to each context.
 - **Routing Gateway:** routes each agent action/request to the appropriate Shield and orchestrates evaluation across the security layer.
 - **Enterprise API:** the unified interface for integrating, validating and enforcing decisions at scale — connecting navigation, shield verdicts and identity/policy checks so organizations can adopt agentic workflows with control and auditability.
 

@@ -1,6 +1,6 @@
 # Architecture
 
-Truslay is a trust ecosystem that sits between an AI agent and the actions it wants to perform. This document describes the high-level architecture — the layers, the flow, and the design principles — without exposing implementation details.
+Truslay is a deterministic execution pipeline that sits between an AI agent and the actions it wants to perform. It is not a wrapper and not a text filter: it evaluates intent against a policy graph and blocks the tool call at system level when the verdict is not ALLOW. This document describes the high-level architecture — the layers, the flow, and the design principles — without exposing implementation details.
 
 ## Ecosystem flow: Gateway → Shield → Enterprise API
 
@@ -64,45 +64,39 @@ Agent action ──► Truslay pipeline ──► Verdict: allow / review / bloc
 
 Every action passes through all layers in order. Each layer can veto the action. The final verdict — allow, review, or block — is recorded with the reason and the confidence, for audit.
 
-## The 8 layers
+## The 8 deterministic layers
 
-### 1. Human pause (kill switch)
+The pipeline is split between the **SDK** (the sovereign edge, Layers 1–6) and
+the **Firewall** (the trust core, Layers 7–8). Truslay is not a wrapper and not a
+text filter: layers 1–5 decide and enforce *before* the tool is invoked, layer 6
+records the sealed decision locally, and layers 7–8 make that decision
+third-party verifiable at fleet scale.
 
-A global or per-recipient pause that the human controls. While paused, no action executes — regardless of what any other layer says. This is the outermost backstop and the human's ultimate authority.
+| # | Layer | What it does | Runs in |
+| --- | --- | --- | --- |
+| 01 | **Signal** | Intercepts the intent before any tool call; normalizes action, actor and payload into a contract. | SDK |
+| 02 | **Lattice** | Evaluates the intent against the versioned policy graph: limits, budgets, whitelists, roles, dual approval. | SDK |
+| 03 | **Shield** | Applies domain policy packs (finance, HR, health-PII, legal, cyber, DevOps, commerce, support, booking). | SDK |
+| 04 | **Gate** | Enforces the verdict at system level: the tool call is blocked, fail-closed. | SDK |
+| 05 | **Seal** | Signs the decision locally with ed25519 so it cannot be altered afterwards. | SDK |
+| 06 | **Ledger** | Appends the sealed decision to a local hash chain, available offline. | SDK |
+| 07 | **Anchor** | Anchors ledger hashes to the **Sui** blockchain for immutable audit (SOX/GDPR). | Firewall |
+| 08 | **Prism** | Fleet observability: dashboards, policy analytics, human audit and evidence export. | Firewall |
 
-### 2. Credential guard
-
-Any request that asks for private keys, seed phrases, mnemonics, or keystore access is blocked immediately. This layer does not depend on a model — it catches credential-theft attempts deterministically, before anything else evaluates the action.
-
-### 3. Policy engine
-
-Policy rules are non-negotiable. Recipient whitelists, per-transaction limits, and daily budgets are checked here. If an action violates policy, it is blocked or held regardless of the model's opinion. The model is advice; policy is law.
-
-### 4. Approval gate
-
-An action that claims to already be approved — for example, text that says "the user already approved this" — is rejected unless it carries a real cryptographic approval from a separate approval queue. The agent's own words are not authorization. Real approval comes from a human via the approval queue, not from the agent's text.
-
-### 5. Calibrated decision engine
-
-A semantic model evaluates the intent of the action and returns a verdict — allow, review, or block — with a confidence score. This is where semantic understanding enters: the model looks at what the action means, not just whether it matches a pattern. The verdict is calibrated against a threshold; low confidence sends the action to review rather than allowing it.
-
-### 6. Skill / package integrity
-
-Skills, packages, and any code or content the agent brings into the transaction are scanned for injection before they enter the pipeline. Hidden instructions in CSS, HTML, metadata, or structured data are caught here — before they can influence the decision engine.
-
-### 7. Transport security
-
-Outgoing requests are inspected for exfiltration, sensitive path access, unauthorized tool calls, and prompt-injection markers. This layer catches attacks that try to leak data or misuse tools, independently of the decision engine.
-
-### 8. Human approval queue
-
-Actions above a configurable threshold, or with low model confidence, are queued for a human to approve or reject. This is the final backstop. The queue is the human's chance to catch anything the automated layers missed — and the reason the system is fail-closed rather than fail-open.
+The edge never depends on a network round trip to protect the agent. The core
+never decides whether a tool runs; it governs policy, proves integrity and gives
+humans the audit interface.
 
 ## What Truslay is not
 
-- It is not a replacement for the agent. The agent still decides what to do; Truslay decides whether to let it execute.
+- It is not a wrapper or a text filter. It does not "clean" prompts; it decides
+  whether an action is allowed and blocks execution at system level.
+- It is not a replacement for the agent. The agent still decides what to do;
+  Truslay decides whether to let it execute.
 - It is not a payment processor. It sits in front of one.
-- It is not a silver bullet. The layers reduce risk, but a determined adversary and a poorly calibrated model can still cause problems. The honest summary of what the current MVP does and does not protect is in [SECURITY.md](SECURITY.md).
+- It is not a silver bullet. The layers reduce risk, but a determined adversary
+  and a poorly written policy can still cause problems. The honest summary of
+  what the current MVP does and does not protect is in [SECURITY.md](SECURITY.md).
 
 ## Extensibility
 

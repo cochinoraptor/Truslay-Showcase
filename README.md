@@ -90,23 +90,36 @@ Source: [Truslay-SDK → integrations](https://github.com/cochinoraptor/Truslay-
 
 ## Modular by Design
 
-You don't need the entire ecosystem to get value. Truslay is built as independent, composable products:
+You don't need the entire ecosystem to get value. Truslay is built as
+independent, composable products:
 
-- **Firewall** — the 10 Security Shields that evaluate every agent action.
-- **Agent Navigator** — the WebMCPcss map that tells agents how to navigate a site.
-- **Enterprise API** — the validation layer that enforces policy before execution.
+- **SDK (`@truslay/sdk`)** — *The Sovereign Edge*: the local-first enforcer that
+  runs Layers 1–6 (Signal, Lattice, Shield, Gate, Seal, local Ledger) inside
+  your runtime in under 1 ms. It physically blocks the tool call, fail-closed,
+  without needing the network.
+- **Firewall** — *The Trust Core*: Layers 7–8 (Anchor on Sui, Prism dashboards).
+  The policy brain and immutable notary for the fleet — not a proxy that traffic
+  passes through.
+- **Agent Navigator** — the WebMCPcss map that tells agents how to navigate a
+  site.
+- **Enterprise API** — fleet policy management, API keys, quotas and audit
+  export on top of the same deterministic pipeline.
 
-Combine them for the ultimate Trust Ecosystem: Agent Navigator asks the Firewall for permission before executing any web action.
+Combine them for the complete trust layer: Agent Navigator asks the SDK for
+permission before executing any web action, and the Firewall anchors the sealed
+decision for audit.
 
 See [docs/interaction-scenarios.md](docs/interaction-scenarios.md) for the three interaction workflows (Mermaid diagrams): local Defense, authorized Collaboration, and high-risk Human-in-the-Loop approval.
 
 ## Introduction
 
-Truslay is not just a firewall. It is an ecosystem that combines **10 Security Shields**, a **Routing Gateway**, and an **Enterprise API** to protect AI agents end to end: actions are routed to the right shield, evaluated under policy and risk controls, and validated through the Enterprise API before they can proceed. The system is **fail-closed by design** — when in doubt, actions are held for review rather than auto-approved.
+Truslay is a deterministic execution pipeline for AI agents. It combines the **SDK** (the sovereign edge: Layers 1–6) with the **Firewall** (the trust core: Layers 7–8), plus 10 domain Shield packs, a Routing Gateway and an Enterprise API. Actions are intercepted, evaluated against the policy graph, and blocked at system level before they execute. The system is **fail-closed by design** — when in doubt, the action is blocked rather than auto-approved.
 
-## The 10 Shields
+## Shield domain packs (Layer 03)
 
-| Shield | What it protects |
+Layer 03 (**Shield**) applies these domain-specific policy packs inside the SDK, locally:
+
+| Shield pack | What it protects |
 |---|---|
 | **HR Shield** | Scans résumés for hidden injections. |
 | **Finance Shield** | Protects transfers and payments from unauthorized actions. |
@@ -174,18 +187,60 @@ AI agents can already browse, compare, and act on our behalf. But every agent fa
 
 ## What Truslay does
 
-Truslay sits between the agent and execution. Each requested action passes through a multi-layer decision pipeline that combines non-negotiable policy rules, semantic decisioning, structural checks, and human approval as the final backstop for anything above a threshold.
+Truslay is not a wrapper and not a text filter. It is a deterministic execution
+engine for AI agents: it intercepts the intent, evaluates it against a policy
+graph (Lattice), and blocks the tool call at system level (Gate) before the
+action can happen. Text never gets "cleaned" — decisions get enforced.
+
+## Architecture: The SDK and The Firewall
+
+Truslay ships as two complementary halves: an **Edge** that enforces inside your
+process, and a **Core** that governs and notarizes the fleet.
+
+### The SDK (`@truslay/sdk`) — "The Sovereign Edge"
+
+- **What it does:** the local-first, zero-dependency execution engine. It is the
+  **enforcer** that lives inside your application's runtime.
+- **Coverage:** Layers 1–5 (Signal, Lattice, Shield, Gate, Seal) plus Layer 6
+  (local Ledger) in **<1 ms**.
+- **Scope:** intent interception, policy-graph evaluation, physical tool-call
+  blocking (fail-closed) and local ed25519 signing. It does not need the
+  internet to protect the agent.
+
+### The Truslay Firewall — "The Trust Core"
+
+- **What it does:** the holistic security architecture and governance system. It
+  is not "a server traffic passes through": it is the policy brain and the
+  immutable notary.
+- **Coverage:** Layers 7–8 (Anchor and Prism). It anchors Ledger hashes to the
+  **Sui** blockchain for immutable audit (SOX/GDPR) and provides the team
+  observability dashboard.
+- **Scope:** fleet-wide cryptographic truth, macro policy management and the
+  human audit interface.
+
+### The synergy
+
+The SDK (Edge) intercepts the agent's action and evaluates it locally in
+milliseconds. If it is safe, it seals it (Seal) and executes. If it is complex
+or requires external audit, the SDK pushes the hash to the Firewall (Core),
+which anchors it on Sui (Anchor) and makes it visible in the dashboard (Prism).
+
+> **The SDK is the sovereign guardian inside your code; the Firewall is the
+> immutable vault on the network. Together they form the only deterministic
+> trust layer for autonomous agents.**
 
 ## The 8 layers
 
-1. **Human pause** — A global or per-recipient kill switch. While paused, nothing executes.
-2. **Credential guard** — Requests for private keys, seed phrases, or keystores are blocked immediately.
-3. **Policy engine** — Recipient whitelists, per-transaction limits, and daily budgets. Policy is law.
-4. **Approval gate** — Textual claims of approval are rejected; real approval comes from a separate approval queue.
-5. **Calibrated decision engine** — A semantic model evaluates intent and returns a verdict with confidence.
-6. **Skill/package integrity** — Skills and packages are scanned for injection before entering the pipeline.
-7. **Transport security** — Outgoing requests are inspected for exfiltration, sensitive paths, and unauthorized tool calls.
-8. **Human approval queue** — Actions above a threshold, or with low confidence, are queued for human review.
+| # | Layer | What it does | Runs in |
+| --- | --- | --- | --- |
+| 01 | **Signal** | Intercepts the intent before any tool call; normalizes action, actor and payload. | SDK |
+| 02 | **Lattice** | Evaluates the intent against the policy graph: limits, whitelists, roles, dual approval. | SDK |
+| 03 | **Shield** | Applies domain packs (finance, HR, health-PII, legal, cyber, DevOps, commerce, support, booking). | SDK |
+| 04 | **Gate** | Enforces the verdict at system level: the tool call is blocked, fail-closed. | SDK |
+| 05 | **Seal** | Signs the decision locally with ed25519 so the verdict cannot be altered. | SDK |
+| 06 | **Ledger** | Records the sealed decision in an append-only local ledger, available offline. | SDK |
+| 07 | **Anchor** | Anchors ledger hashes to the **Sui** blockchain for immutable, verifiable audit (SOX/GDPR). | Firewall |
+| 08 | **Prism** | Fleet observability: dashboards, policy analytics, human audit and evidence export. | Firewall |
 
 ## Architecture
 
@@ -194,28 +249,44 @@ Truslay sits between the agent and execution. Each requested action passes throu
                     │        AI AGENT              │
                     │  (browse, compare, operate)  │
                     └─────────────┬───────────────┘
-                                  │ action request
+                                  │ intent + payload
                                   ▼
-                    ┌─────────────────────────────┐
-                    │         TRUSLAY              │
-                    │  Gateway · Shields · API     │
-                    ├─────────────────────────────┤
-                    │  1. Human pause (kill switch)│
-                    │  2. Credential guard          │
-                    │  3. Policy engine             │
-                    │  4. Approval gate             │
-                    │  5. Calibrated decision engine│
-                    │  6. Skill/package integrity   │
-                    │  7. Transport security        │
-                    │  8. Human approval queue      │
-                    └─────────────┬───────────────┘
-                                  │ verdict: allow / review / block
-                                  ▼
-                    ┌─────────────────────────────┐
-                    │     ACTION / EXECUTOR        │
-                    │  (payment, tool, workflow)   │
-                    └─────────────────────────────┘
+        ┌───────────────────────────────────────────────┐
+        │  SDK — THE SOVEREIGN EDGE  (<1 ms, offline)   │
+        │  01 Signal   02 Lattice   03 Shield           │
+        │  04 Gate     05 Seal      06 Ledger (local)   │
+        └─────────────┬─────────────────────────────────┘
+                      │ blocked (fail-closed) ──► action never runs
+                      │ sealed hash
+                      ▼
+        ┌───────────────────────────────────────────────┐
+        │  FIREWALL — THE TRUST CORE                    │
+        │  07 Anchor (Sui, immutable)                   │
+        │  08 Prism (dashboards, human audit)           │
+        └─────────────┬─────────────────────────────────┘
+                      │ attestation
+                      ▼
+        ┌─────────────────────────────┐
+        │     ACTION / EXECUTOR        │
+        │  (payment, tool, workflow)   │
+        └─────────────────────────────┘
 ```
+
+## 💰 Pricing & Access
+
+- **1,000 evaluations free**, no credit card required.
+- **Public plans from $19.99/month** up to **$5,999.99/month** for enterprise
+  fleets with on-chain anchoring, SSO and audit export.
+- Plans and limits: **<https://truslay.com/pricing>**
+
+## License
+
+**SEE LICENSE IN [LICENSE.md](LICENSE.md)** in the
+[Truslay-SDK](https://github.com/cochinoraptor/Truslay-SDK) repository. Truslay
+is proprietary software, licensed — not sold. This showcase repository's own
+code is covered by its [LICENSE](LICENSE) file.
+
+---
 
 ## Verification highlights
 
@@ -262,3 +333,7 @@ An independent red-team suite of 34 adversarial prompt injection attacks targets
 
 - **Email:** cochinoraptor@gmail.com
 - **Issues:** [Open an issue](https://github.com/cochinoraptor/Truslay-Showcase/issues)
+
+---
+
+⚠️ **Note: Truslay is not affiliated with "Trustly" or "TrustLayer".** Truslay is an independent deterministic execution and audit layer for AI agents; any similarity in name is coincidental.
