@@ -4,6 +4,8 @@
 
 > Truslay is the trust ecosystem that lets AI agents operate and transact safely in the agentic world.
 
+**The engine lives in its own repository.** [`Truslay-SDK`](https://github.com/cochinoraptor/Truslay-SDK) ships the local-first SDK, its license and its integrations (n8n, Pipedream, Make). This showcase repository documents the architecture, the threat model and the recorded demo. Start there if you want to run the enforcement inside your own code.
+
 ## The New Wave of AI Bots is Here. Protect Your Business.
 
 **You don't need to use AI to be attacked by it.** 
@@ -19,7 +21,7 @@ Install Truslay to shield your website or app from unauthorized AI bots. Truslay
 - Stops bots that browse your site at superhuman speeds (BehavioralGuard).
 - Sets invisible traps to catch automated scrapers (Honeypots).
 - Blocks fake account creation, price stealing, and data theft.
-- Works instantly with any technology: React, WordPress, Shopify, or custom websites.
+- Works instantly with any stack: a marketing site, a storefront, or a custom application.
 
 ### 🤝 2. Empower Your Own AI (When you are ready)
 *For tech teams building their own automated systems.*
@@ -32,7 +34,7 @@ If your company uses AI bots to do work for you, Truslay gives them a secure dig
 
 Every industry is facing the new wave of AI bots. Here is how Truslay stops them.
 
-### 🛒 E-commerce & Retail (Addi, Siigo, Shopify stores)
+### 🛒 E-commerce & Retail
 **The Problem:** Competitors use AI bots to monitor and steal your prices and stock levels in real time, undercutting your business.
 **The Truslay Solution:** Truslay detects bots that browse your store too fast and blocks them. Your pricing strategy stays private.
 
@@ -97,10 +99,10 @@ independent, composable products:
   runs Layers 1–6 (Signal, Lattice, Shield, Gate, Seal, local Ledger) inside
   your runtime in under 1 ms. It physically blocks the tool call, fail-closed,
   without needing the network.
-- **Firewall** — *The Trust Core*: Layers 7–8 (Anchor on Sui, Prism dashboards).
+- **Firewall** — *The Trust Core*: Layers 7–8 (Anchor on a decentralized ledger, Prism dashboards).
   The policy brain and immutable notary for the fleet — not a proxy that traffic
   passes through.
-- **Agent Navigator** — the WebMCPcss map that tells agents how to navigate a
+- **Agent Navigator** — the navigation map that tells agents how to navigate a
   site.
 - **Enterprise API** — fleet policy management, API keys, quotas and audit
   export on top of the same deterministic pipeline.
@@ -109,7 +111,7 @@ Combine them for the complete trust layer: Agent Navigator asks the SDK for
 permission before executing any web action, and the Firewall anchors the sealed
 decision for audit.
 
-See [docs/interaction-scenarios.md](docs/interaction-scenarios.md) for the three interaction workflows (Mermaid diagrams): local Defense, authorized Collaboration, and high-risk Human-in-the-Loop approval.
+See [docs/interaction-scenarios.md](docs/interaction-scenarios.md) for the three interaction workflows (diagrams): local Defense, authorized Collaboration, and high-risk Human-in-the-Loop approval.
 
 ## Introduction
 
@@ -132,13 +134,13 @@ Layer 03 (**Shield**) applies these domain-specific policy packs inside the SDK,
 | **Customer Support Shield** | Protects chats and customer data in the CRM. |
 | **Booking Shield** | Protects booking systems and calendars. |
 
-## WebMCPcss and Agent Navigator
+## Agent Navigator
 
-Truslay integrates **Agent Navigator** (the [WebMCPcss](https://github.com/cochinoraptor/WebMCPcss) open-source map, **MIT** license) so agents can navigate the web using a structured, reliable tool/navigation map. Navigation and tool discovery are paired with Truslay’s protection model: **security is validated through the Enterprise API**, ensuring agent actions are evaluated and enforced consistently before execution.
+Truslay integrates **Agent Navigator** (the [open-source navigation map](https://github.com/cochinoraptor/WebMCPcss), **MIT** license) so agents can navigate the web using a structured, reliable tool/navigation map. Navigation and tool discovery are paired with Truslay’s protection model: **security is validated through the Enterprise API**, ensuring agent actions are evaluated and enforced consistently before execution.
 
 ## Demo: an autonomous agent buying something — supervised by Truslay
 
-A recorded, end-to-end run in [`demo-agente/`](demo-agente/): a Puppeteer agent
+A recorded, end-to-end run in [`demo-agente/`](demo-agente/): an autonomous browser agent
 opens the storefront, finds "Auriculares Pro X1" by its visible text, adds it to
 the cart, fills the checkout form with real typing and places the order — then
 verifies the `ORD-…` in the confirmation modal against `localStorage`.
@@ -177,9 +179,9 @@ config object is silently ignored — see
 
 ## Security audit (HackenProof)
 
-Truslay maintains an external security review process with **HackenProof**. The **audit of the contracts in Move (Sui)** is currently **in process**.
+Truslay maintains an external security review process with **HackenProof**. The **audit of the on-chain contracts** is currently **in process**.
 
-- Move contracts (audit scope): https://github.com/cochinoraptor/truslay-move-contracts-audit
+- On-chain contracts (audit scope): https://github.com/cochinoraptor/truslay-move-contracts-audit
 
 ## The problem
 
@@ -191,6 +193,33 @@ Truslay is not a wrapper and not a text filter. It is a deterministic execution
 engine for AI agents: it intercepts the intent, evaluates it against a policy
 graph (Lattice), and blocks the tool call at system level (Gate) before the
 action can happen. Text never gets "cleaned" — decisions get enforced.
+
+## Technical Architecture
+
+The trust path has five stages, and none of them is a text filter:
+
+```text
+Agent  →  SDK (Edge)  →  Firewall (Core)  →  Immutable Ledger  →  Audit
+```
+
+1. **Agent.** It decides what it wants to do: pay, deploy, delete, read a
+   mailbox, call a tool.
+2. **SDK (Edge).** The local library intercepts the intent before the tool runs,
+   evaluates the deterministic policy graph in <1 ms and returns a verdict. A
+   block physically stops the call, fail-closed: no network, no model and no
+   exception path can approve it.
+3. **Firewall (Core).** Approved and blocked decisions arrive as signed hashes.
+   The Core applies fleet-wide policy, aggregates the decisions of every agent
+   and prepares the anchoring batch.
+4. **Immutable Ledger.** Decisions are hash-linked into an append-only record,
+   and the root of that record is anchored on a decentralized network. Anyone
+   can verify that a decision existed and was not altered afterwards.
+5. **Audit.** A human can replay any decision line by line, export the evidence
+   and prove compliance to an external auditor.
+
+The separation matters: latency-critical enforcement never waits for a network
+round trip, while the audit trail is not something the agent (or its operator)
+can edit.
 
 ## Architecture: The SDK and The Firewall
 
@@ -204,7 +233,7 @@ process, and a **Core** that governs and notarizes the fleet.
 - **Coverage:** Layers 1–5 (Signal, Lattice, Shield, Gate, Seal) plus Layer 6
   (local Ledger) in **<1 ms**.
 - **Scope:** intent interception, policy-graph evaluation, physical tool-call
-  blocking (fail-closed) and local ed25519 signing. It does not need the
+  blocking (fail-closed) and local cryptographic signing. It does not need the
   internet to protect the agent.
 
 ### The Truslay Firewall — "The Trust Core"
@@ -213,7 +242,7 @@ process, and a **Core** that governs and notarizes the fleet.
   is not "a server traffic passes through": it is the policy brain and the
   immutable notary.
 - **Coverage:** Layers 7–8 (Anchor and Prism). It anchors Ledger hashes to the
-  **Sui** blockchain for immutable audit (SOX/GDPR) and provides the team
+  **decentralized ledger** for immutable audit (SOX/GDPR) and provides the team
   observability dashboard.
 - **Scope:** fleet-wide cryptographic truth, macro policy management and the
   human audit interface.
@@ -223,7 +252,7 @@ process, and a **Core** that governs and notarizes the fleet.
 The SDK (Edge) intercepts the agent's action and evaluates it locally in
 milliseconds. If it is safe, it seals it (Seal) and executes. If it is complex
 or requires external audit, the SDK pushes the hash to the Firewall (Core),
-which anchors it on Sui (Anchor) and makes it visible in the dashboard (Prism).
+which anchors it on the decentralized ledger (Anchor) and makes it visible in the dashboard (Prism).
 
 > **The SDK is the sovereign guardian inside your code; the Firewall is the
 > immutable vault on the network. Together they form the only deterministic
@@ -237,9 +266,9 @@ which anchors it on Sui (Anchor) and makes it visible in the dashboard (Prism).
 | 02 | **Lattice** | Evaluates the intent against the policy graph: limits, whitelists, roles, dual approval. | SDK |
 | 03 | **Shield** | Applies domain packs (finance, HR, health-PII, legal, cyber, DevOps, commerce, support, booking). | SDK |
 | 04 | **Gate** | Enforces the verdict at system level: the tool call is blocked, fail-closed. | SDK |
-| 05 | **Seal** | Signs the decision locally with ed25519 so the verdict cannot be altered. | SDK |
+| 05 | **Seal** | Signs the decision locally with a cryptographic signature so the verdict cannot be altered. | SDK |
 | 06 | **Ledger** | Records the sealed decision in an append-only local ledger, available offline. | SDK |
-| 07 | **Anchor** | Anchors ledger hashes to the **Sui** blockchain for immutable, verifiable audit (SOX/GDPR). | Firewall |
+| 07 | **Anchor** | Anchors ledger roots on a **decentralized network** for immutable, verifiable audit (SOX/GDPR). | Firewall |
 | 08 | **Prism** | Fleet observability: dashboards, policy analytics, human audit and evidence export. | Firewall |
 
 ## Architecture
@@ -261,7 +290,7 @@ which anchors it on Sui (Anchor) and makes it visible in the dashboard (Prism).
                       ▼
         ┌───────────────────────────────────────────────┐
         │  FIREWALL — THE TRUST CORE                    │
-        │  07 Anchor (Sui, immutable)                   │
+        │  07 Anchor (immutable)                        │
         │  08 Prism (dashboards, human audit)           │
         └─────────────┬─────────────────────────────────┘
                       │ attestation
@@ -292,12 +321,12 @@ code is covered by its [LICENSE](LICENSE) file.
 
 ### Tests
 - **Firewall tests:** 192/192 passing
-- **WebMCPcss tests:** 652/652 passing
-- **Move contract tests:** 17/17 passing
+- **Navigator tests:** 652/652 passing
+- **On-chain contract tests:** 17/17 passing
 
 ### External security audit
 - External security audit (DEC-2610): 7/7 in-scope findings remediated
-- **HackenProof:** audit of the contracts in **Move (Sui)** in process
+- **HackenProof:** audit of the on-chain contracts in process
 
 ### Adversarial validation
 - **34 adversarial attacks** in the suite across 5 categories (direct injection, indirect injection, roleplay, context manipulation, sandbox escape); published run: 30.
@@ -306,7 +335,7 @@ code is covered by its [LICENSE](LICENSE) file.
 
 ## Red-team results (honest summary)
 
-An independent red-team suite of 34 adversarial prompt injection attacks targets the pipeline; the published run below executed 30 of them. Results measured against a calibrated INT4 decision engine on CPU:
+An independent red-team suite of 34 adversarial prompt injection attacks targets the pipeline; the published run below executed 30 of them. Results measured against a calibrated local decision engine:
 
 | Outcome | Count | Meaning |
 |---------|-------|---------|
@@ -319,13 +348,13 @@ An independent red-team suite of 34 adversarial prompt injection attacks targets
 
 ### Known limitations (stated honestly)
 
-- The INT4 decision checkpoint was fine-tuned primarily on English-language decision flows. On Spanish payloads it discriminates less well. Production use with non-English agents requires either English normalization or a multilingual checkpoint.
+- The decision model was fine-tuned primarily on English-language decision flows. On Spanish payloads it discriminates less well. Production use with non-English agents requires either English normalization or a multilingual checkpoint.
 - Confidence values are low (p50 0.44) and uncalibrated for this domain. With a 0.6 confidence threshold, many legitimate actions would be escalated to review. Calibration against a real corpus is required before production deployment.
 - The current queue is in-memory and lost on restart. Durable persistence is a production requirement.
 
 ## Status
 
-- **Pre-seed.** MVP on Sui Testnet with test assets.
+- **Pre-seed.** MVP on a public test network with test assets.
 - **Seeking design partners** who want to let their agents operate safely.
 - Full source code is private and available upon request under NDA.
 
